@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Miguel Costemalle Carrandi</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <header class="header" id="main-header">
+    <a href="#" class="header-name">Miguel Costemalle Carrandi</a>
+    <nav class="header-nav">
+      <a href="#obra">obra</a>
+      <a href="#artista">artista</a>
+      <a href="#contacto">contacto</a>
+    </nav>
+    <button class="hamburger" id="hamburger" aria-label="Menú">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+  <div class="mobile-nav" id="mobile-nav">
+    <a href="#obra" class="mobile-nav-link">Obra</a>
+    <a href="#artista" class="mobile-nav-link">Artista</a>
+    <a href="#contacto" class="mobile-nav-link">Contacto</a>
+  </div>
+
+  <!-- ── OBRA ─────────────────────────────────────────────── -->
+  <section class="obra-section" id="obra">
+
+    <!-- Controls bar (sticky) -->
+    <div class="obra-controls">
+
+      <!-- Category tabs -->
+      <nav class="cat-nav" id="cat-nav">
+        <button class="cat-btn active" data-cat="all">Todo</button>
+        <button class="cat-btn" data-cat="pintura">Pinturas</button>
+        <button class="cat-btn" data-cat="dibujo">Dibujo</button>
+        <button class="cat-btn" data-cat="grabado">Grabado</button>
+        <button class="cat-btn" data-cat="escultura">Escultura</button>
+      </nav>
+
+      <!-- Right: availability filter + view toggle (desktop) -->
+      <div class="obra-controls-right">
+        <div class="avail-filter" id="avail-filter">
+          <button class="avail-btn active" data-avail="all">Todos</button>
+          <button class="avail-btn" data-avail="green">
+            <span class="avail-btn-dot dot-green"></span>Disponible
+          </button>
+          <button class="avail-btn" data-avail="yellow">
+            <span class="avail-btn-dot dot-yellow"></span>Para exhibir
+          </button>
+          <button class="avail-btn" data-avail="red">
+            <span class="avail-btn-dot dot-red"></span>No disponible
+          </button>
+        </div>
+        <div class="view-toggle" id="view-toggle">
+          <button class="view-btn" data-view="slide" title="Vista individual">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="1" y="2" width="12" height="10" rx="0.5" fill="currentColor"/>
+            </svg>
+          </button>
+          <button class="view-btn active" data-view="grid" title="Vista en cuadrícula">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="1" y="1" width="5.5" height="5.5" fill="currentColor"/>
+              <rect x="7.5" y="1" width="5.5" height="5.5" fill="currentColor"/>
+              <rect x="1" y="7.5" width="5.5" height="5.5" fill="currentColor"/>
+              <rect x="7.5" y="7.5" width="5.5" height="5.5" fill="currentColor"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile filter toggle button -->
+      <button class="mobile-filter-btn" id="mobile-filter-btn" aria-label="Filtros">
+        <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <line x1="1" y1="4" x2="14" y2="4" stroke="currentColor" stroke-width="1.2"/>
+          <line x1="1" y1="8" x2="14" y2="8" stroke="currentColor" stroke-width="1.2"/>
+          <line x1="1" y1="12" x2="14" y2="12" stroke="currentColor" stroke-width="1.2"/>
+          <circle cx="5" cy="4" r="1.8" fill="white" stroke="currentColor" stroke-width="1.2"/>
+          <circle cx="10" cy="8" r="1.8" fill="white" stroke="currentColor" stroke-width="1.2"/>
+          <circle cx="5" cy="12" r="1.8" fill="white" stroke="currentColor" stroke-width="1.2"/>
+        </svg>
+      </button>
+
+    </div><!-- /obra-controls -->
+
+    <!-- Mobile secondary menu -->
+    <div class="controls-secondary" id="controls-secondary">
+      <div class="avail-filter" id="avail-filter-mobile">
+        <button class="avail-btn active" data-avail="all">Todos</button>
+        <button class="avail-btn" data-avail="green">
+          <span class="avail-btn-dot dot-green"></span>Disponible
+        </button>
+        <button class="avail-btn" data-avail="yellow">
+          <span class="avail-btn-dot dot-yellow"></span>Para exhibir
+        </button>
+        <button class="avail-btn" data-avail="red">
+          <span class="avail-btn-dot dot-red"></span>No disponible
+        </button>
+      </div>
+      <div class="view-toggle" id="view-toggle-mobile">
+        <button class="view-btn" data-view="slide" title="Vista individual">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="1" y="2" width="12" height="10" rx="0.5" fill="currentColor"/>
+          </svg>
+        </button>
+        <button class="view-btn active" data-view="grid" title="Vista en cuadrícula">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="1" y="1" width="5.5" height="5.5" fill="currentColor"/>
+            <rect x="7.5" y="1" width="5.5" height="5.5" fill="currentColor"/>
+            <rect x="1" y="7.5" width="5.5" height="5.5" fill="currentColor"/>
+            <rect x="7.5" y="7.5" width="5.5" height="5.5" fill="currentColor"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- ── SLIDESHOW VIEW ─────────────────────────────────── -->
+    <div class="slide-view" id="slide-view">
+
+      <!-- Image area -->
+      <div class="slide-area">
+        <div class="slide-img-wrap" id="slide-img-wrap"></div>
+
+        <!-- Sub-image nav (for multi-image obras) -->
+        <div class="slide-sub-nav" id="slide-sub-nav" style="display:none">
+          <button class="slide-sub-btn" id="slide-sub-prev">&#8249;</button>
+          <span class="slide-sub-counter" id="slide-sub-counter"></span>
+          <button class="slide-sub-btn" id="slide-sub-next">&#8250;</button>
+        </div>
+
+        <!-- Obra navigation arrows -->
+        <button class="slide-arrow slide-prev-obra" id="slide-prev-obra" aria-label="Obra anterior">&#8592;</button>
+        <button class="slide-arrow slide-next-obra" id="slide-next-obra" aria-label="Obra siguiente">&#8594;</button>
+      </div>
+
+      <!-- Info panel -->
+      <div class="slide-info" id="slide-info">
+        <div class="slide-counter" id="slide-counter"></div>
+        <h2 class="slide-title" id="slide-title"></h2>
+        <div class="slide-meta" id="slide-meta"></div>
+        <p class="slide-def" id="slide-def"></p>
+        <p class="slide-price" id="slide-price"></p>
+        <p class="slide-nota" id="slide-nota"></p>
+        <div class="slide-avail" id="slide-avail"></div>
+      </div>
+
+    </div><!-- /slide-view -->
+
+    <!-- ── GRID VIEW ──────────────────────────────────────── -->
+    <div class="grid-view" id="grid-view" style="display:none">
+      <div class="obra-grid" id="obra-grid"></div>
+    </div>
+
+    <!-- Empty state -->
+    <div class="obra-empty" id="obra-empty" style="display:none">
+      <p>No hay obras en esta selección.</p>
+    </div>
+
+  </section><!-- /obra-section -->
+
+  <!-- ── ARTISTA ────────────────────────────────────────── -->
+  <section class="artista-section" id="artista">
+    <div class="artista-left">
+      <p class="artista-role">Artista visual, escritor y escultor</p>
+      <h2 class="artista-name">Miguel<br>Costemalle<br>Carrandi</h2>
+      <p class="artista-bio">Miguel Costemalle Carrandi es un artista visual y escritor mexicano cuya práctica se desarrolla entre México y Europa. Desde temprana edad exploró distintas disciplinas tales como la literatura, fotografía, música y pintura, movido más por la necesidad de expresar emociones que por una intención profesional. Con el tiempo, encontró su voz al unir la palabra y la imagen, haciendo de la literatura y el arte un solo lenguaje.</p>
+      <br>
+      <p class="artista-bio">Su trabajo nace de una mirada romántica y poética que dialoga con lo contemporáneo sin perder carga emocional. Convencido de que el valor sentimental se ha diluido en muchas prácticas actuales, integra texto en sus pinturas como un gesto de resistencia: un recordatorio de cómo se siente.</p>
+      <br>
+      <p class="artista-bio">En su desarrollo reciente, su práctica ha evolucionado hacia una exploración más amplia de la materialidad y el espacio, incorporando escultura e instalación. Ha trabajado con materiales como acero, bronce y superficies intervenidas, llevando su lenguaje a formatos de mayor escala y dimensión física.</p>
+      <br>
+      <p class="artista-bio">Paralelamente, ha consolidado una presencia activa en contextos expositivos y colaborativos, construyendo un cuerpo de obra que mantiene coherencia entre lo íntimo y lo estructural. Actualmente, su trabajo se orienta hacia la expansión de su lenguaje visual y literario, con interés en proyectos de mayor alcance internacional, sin desprenderse de su eje central: la emoción como materia.</p>
+    </div>
+    <div class="artista-right">
+      <div class="artista-block">
+        <p class="artista-block-title">Formación</p>
+        <p>B.A. in Visual Arts and Painting<br>NABA — Nuova Accademia di Belle Arti, Milán</p>
+      </div>
+      <div class="artista-block">
+        <p class="artista-block-title">Especialidad</p>
+        <p>Pintura, instalación y escultura en acero oxidado, cemento, lino y madera.</p>
+      </div>
+      <div class="artista-block">
+        <p class="artista-block-title">Líneas de investigación</p>
+        <p>Color, materia, memoria y deseo.</p>
+      </div>
+      <div class="artista-block">
+        <p class="artista-block-title">Exposiciones recientes</p>
+        <ul>
+          <li>El Arte del Gran Premio, Ciudad de México (2025)</li>
+          <li>Exposición individual, Ciudad de México (2024)</li>
+          <li>Exposición individual, Milán (2024)</li>
+        </ul>
+      </div>
+      <div class="artista-block">
+        <p class="artista-block-title">Idiomas</p>
+        <p>Español, inglés, italiano, francés.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ─────────────────────────────────────────── -->
+  <footer class="footer" id="contacto">
+    <div class="footer-col">
+      <p class="footer-col-title">Contacto</p>
+      <a href="mailto:mikecostemalle@gmail.com">mikecostemalle@gmail.com</a>
+      <a href="tel:+525527554122">+52 55 2755 4122</a>
+      <a href="tel:+393513689894">+39 351 3689894</a>
+    </div>
+    <div class="footer-col">
+      <p class="footer-col-title">Ubicación</p>
+      <p>Ciudad de México / Milán</p>
+    </div>
+    <div class="footer-col">
+      <p class="footer-col-title">Redes</p>
+      <a href="https://instagram.com/costemallecarrandi" target="_blank" rel="noopener">@costemallecarrandi</a>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
