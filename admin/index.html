@@ -4,6 +4,7 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Admin — Miguel Costemalle Carrandi</title>
+  <script src="https://cdn.jsdelivr.net/npm/browser-image-compression@2.0.2/dist/browser-image-compression.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
@@ -267,8 +268,9 @@
             <input type="file" id="img-input" accept="image/*"/>
           </div>
           <p style="font-size:.75rem;color:var(--muted);margin-top:.3rem">
-            Nombre del archivo actual: <span id="img-current-name" style="color:var(--ink)">—</span>
+            Archivo: <span id="img-current-name" style="color:var(--ink)">—</span>
           </p>
+          <p id="img-compress-info" style="font-size:.75rem;color:#3a8c5a;margin-top:.2rem;display:none"></p>
         </div>
 
         <!-- Extra images -->
@@ -495,17 +497,23 @@ const uploadArea  = document.getElementById('upload-area');
 const imgInput    = document.getElementById('img-input');
 const extraInput  = document.getElementById('imgs-extra-input');
 
-imgInput.addEventListener('change', e => {
+imgInput.addEventListener('change', async e => {
   const file = e.target.files[0]; if (!file) return;
   newImgFile = file;
+
+  // Preview rápido con archivo original
   const reader = new FileReader();
   reader.onload = ev => {
     const prev = document.getElementById('img-preview');
     prev.src = ev.target.result; prev.style.display = 'block';
-    document.getElementById('img-label').textContent = file.name;
-    document.getElementById('img-current-name').textContent = file.name;
   };
   reader.readAsDataURL(file);
+
+  // Mostrar nombre y tamaño original
+  const sizeMB = (file.size / 1024 / 1024).toFixed(1);
+  document.getElementById('img-label').textContent = file.name;
+  document.getElementById('img-current-name').textContent = `${file.name} (${sizeMB} MB original)`;
+  document.getElementById('img-compress-info').style.display = 'none';
 });
 
 uploadArea.addEventListener('dragover', e => { e.preventDefault(); uploadArea.classList.add('dragover'); });
@@ -543,36 +551,69 @@ function renderExtraImgs() {
 function removeExtraKeep(i) { extraImgsKeep.splice(i, 1); renderExtraImgs(); }
 function removeExtraNew(i) { extraImgFiles.splice(i, 1); renderExtraImgs(); }
 
+/* ── Compresión de imagen ── */
+async function compressImage(file, maxPx, maxMB) {
+  return imageCompression(file, {
+    maxSizeMB: maxMB,
+    maxWidthOrHeight: maxPx,
+    useWebWorker: true,
+    fileType: 'image/webp',
+    initialQuality: 0.82,
+  });
+}
+
+async function uploadCompressed(file, destName) {
+  const origMB = (file.size / 1024 / 1024).toFixed(1);
+  setSaving(`Comprimiendo imagen (${origMB} MB)…`);
+
+  // Versión completa — max 1920px, ~1.2 MB, WebP
+  const full = await compressImage(file, 1920, 1.2);
+  // Miniatura — max 600px, ~100 KB, WebP
+  const thumb = await compressImage(file, 600, 0.1);
+
+  const baseName = destName.replace(/\.[^.]+$/, '') + '.webp';
+  const fullKB  = (full.size  / 1024).toFixed(0);
+  const thumbKB = (thumb.size / 1024).toFixed(0);
+  const saved   = Math.round((1 - full.size / file.size) * 100);
+
+  setSaving(`Subiendo imagen completa (${fullKB} KB)…`);
+  await uploadFile(baseName, await fileToBase64(full), `Sube imagen: ${baseName}`);
+
+  setSaving(`Subiendo miniatura (${thumbKB} KB)…`);
+  await uploadFile('thumbs/' + baseName, await fileToBase64(thumb), `Sube miniatura: thumbs/${baseName}`);
+
+  // Mostrar info de compresión
+  document.getElementById('img-compress-info').textContent =
+    `✓ Comprimida: ${origMB} MB → ${fullKB} KB (${saved}% menos). Miniatura: ${thumbKB} KB`;
+  document.getElementById('img-compress-info').style.display = 'block';
+
+  return baseName;
+}
+
 /* ── SAVE ── */
 async function saveObra() {
   const title = document.getElementById('f-title').value.trim();
   if (!title) { toast('El título es obligatorio.', true); return; }
 
-  setSaving('Subiendo imágenes…');
-
   let imgName = editIdx >= 0 ? (obras[editIdx].img || '') : '';
 
-  // Upload main image
+  // Upload + compress main image
   if (newImgFile) {
-    imgName = newImgFile.name;
-    const b64 = await fileToBase64(newImgFile);
     try {
-      await uploadFile(imgName, b64, `Sube imagen: ${imgName}`);
+      imgName = await uploadCompressed(newImgFile, newImgFile.name);
     } catch(e) {
       hideSaving();
-      toast('Error al subir imagen principal.', true);
+      toast('Error al comprimir/subir imagen principal.', true);
       return;
     }
   }
 
-  // Upload extra images
+  // Upload + compress extra images
   const allExtraNames = [...extraImgsKeep];
   for (const entry of extraImgFiles) {
-    setSaving(`Subiendo ${entry.name}…`);
     try {
-      const b64 = await fileToBase64(entry.file);
-      await uploadFile(entry.name, b64, `Sube imagen: ${entry.name}`);
-      allExtraNames.push(entry.name);
+      const name = await uploadCompressed(entry.file, entry.name);
+      allExtraNames.push(name);
     } catch(e) {
       hideSaving();
       toast(`Error al subir ${entry.name}.`, true);

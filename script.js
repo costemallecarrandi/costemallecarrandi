@@ -434,7 +434,7 @@ function renderSlide() {
     img.style.opacity = '0';
     slideImgWrap.appendChild(img);
     img.onload = () => { img.style.opacity = '1'; };
-    img.src = encodeURI(imgs[gSub]) + '?v=' + Date.now();
+    img.src = encodeURI(imgs[gSub]);
   }
 
   /* counter */
@@ -477,6 +477,24 @@ function renderSlide() {
   }
 }
 
+/* ── Lazy loading con IntersectionObserver ────────────────── */
+const lazyObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) return;
+    const img = entry.target;
+    const src = img.dataset.src;
+    if (!src) return;
+    img.src = src;
+    img.removeAttribute('data-src');
+    lazyObserver.unobserve(img);
+  });
+}, { rootMargin: '300px 0px' }); // precarga 300px antes de que sea visible
+
+function thumbSrc(filename) {
+  // Intenta cargar miniatura; si falla, usa original
+  return 'thumbs/' + encodeURI(filename);
+}
+
 /* ── Render grid ──────────────────────────────────────────── */
 function renderGrid() {
   const list = getFiltered();
@@ -502,9 +520,17 @@ function renderGrid() {
 
     if (obra.img) {
       const img = document.createElement('img');
-      img.src     = encodeURI(obra.img) + '?v=' + Date.now();
-      img.alt     = obra.title;
-      img.loading = 'lazy';
+      img.alt = obra.title;
+      // Lazy: asigna src real al entrar en viewport
+      img.dataset.src = thumbSrc(obra.img);
+      // Si miniatura no existe, cargar original
+      img.onerror = function() {
+        if (this.src !== encodeURI(obra.img)) {
+          this.onerror = null;
+          this.src = encodeURI(obra.img);
+        }
+      };
+      lazyObserver.observe(img);
       wrap.appendChild(img);
     }
 
