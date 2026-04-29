@@ -59,6 +59,22 @@ const OBRAS = [
     img: IMG('ME DAS MI DOMINGO 1.jpg')
   },
   {
+    id: 'me-das-mi-domingo-2', tipo: 'pintura',
+    title: '"¿ME DAS MI DOMINGO? 2"', dim: '197×192 cm',
+    tecnica: 'Óleo sobre lino',
+    year: '2026', price: null, avail: 'green',
+    serie: null,
+    img: IMG('¿ME DAS MI DOMINGO? 2.jpg')
+  },
+  {
+    id: 'me-das-mi-domingo-3', tipo: 'pintura',
+    title: '"¿ME DAS MI DOMINGO? 3"', dim: '197×192 cm',
+    tecnica: 'Óleo sobre lino',
+    year: '2026', price: null, avail: 'green',
+    serie: null,
+    img: IMG('¿ME DAS MI DOMINGO? 3.jpg')
+  },
+  {
     id: 'ekta-calaca-27', tipo: 'pintura',
     title: 'EKTA CALACA 27', dim: '35×178 cm',
     tecnica: 'Óleo, acuarelas, plumones de acrílico, pasteles de óleo y pintura acrílica sobre lienzo',
