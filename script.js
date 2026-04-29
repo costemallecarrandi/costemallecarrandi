@@ -64,7 +64,7 @@ const OBRAS = [
     tecnica: 'Óleo sobre lino',
     year: '2026', price: null, avail: 'green',
     serie: null,
-    img: IMG('¿ME DAS MI DOMINGO? 2.jpg')
+    img: IMG('ME DAS MI DOMINGO 2.jpg')
   },
   {
     id: 'me-das-mi-domingo-3', tipo: 'pintura',
@@ -72,7 +72,7 @@ const OBRAS = [
     tecnica: 'Óleo sobre lino',
     year: '2026', price: null, avail: 'green',
     serie: null,
-    img: IMG('¿ME DAS MI DOMINGO? 3.jpg')
+    img: IMG('ME DAS MI DOMINGO 3.jpg')
   },
   {
     id: 'ekta-calaca-27', tipo: 'pintura',
