@@ -1,7 +1,3 @@
-/* ============================================================
-   script.js — Miguel Costemalle Carrandi
-   ============================================================ */
-
 'use strict';
 
 const AVAIL_LABEL = {
@@ -20,11 +16,8 @@ const SERIES_INFO = {
 
 const IMG = f => f;
 
-/* ── CATÁLOGO ──────────────────────────────────────────────────
-   Cargado desde obras.json (editable desde /admin/)
-   ─────────────────────────────────────────────────────────── */
 let OBRAS = [
-  /* ── PINTURAS ─────────────────────────────────────────── */
+
    {
     id: 'pared-maria-1', tipo: 'pintura',
     title: '"PARED MARIA 1"', dim: '30×24 cm',
@@ -210,7 +203,6 @@ let OBRAS = [
     img: IMG('Mutilado 4.jpg')
   },
 
-  /* ── DIBUJO (Carbones) ─────────────────────────────────── */
   {
     id: 'paredes', tipo: 'dibujo',
     title: '"PAREDES"', dim: '60×70 cm',
@@ -307,9 +299,7 @@ let OBRAS = [
     serie: 'Carbones',
     img: IMG('CAMA.jpg')
   },
-  
 
-  /* ── GRABADO ───────────────────────────────────────────── */
   {
     id: 'murcielagos-grabado', tipo: 'grabado',
     title: '"MURCIÉLAGOS"', dim: '60×70 cm',
@@ -343,7 +333,6 @@ let OBRAS = [
     img: IMG('MURCIÉLAGO Icniuhyotl.jpg')
   },
 
-  /* ── ESCULTURA ─────────────────────────────────────────── */
   {
     id: 'instalacion-murcielagos', tipo: 'escultura',
     title: 'INSTALACIÓN MURCIÉLAGOS', dim: 'Variable',
@@ -365,19 +354,13 @@ let OBRAS = [
     ]
   },
 
-  /* ── EXPOSICIÓN (solo para exhibir) ───────────────────── */
- 
 ];
 
-
-/* ══════════════════════════════════════════════════════════════
-   GALLERY — state machine
-   ══════════════════════════════════════════════════════════════ */
-let gCat   = 'all';   // category filter
-let gAvail = 'all';   // availability filter
-let gView  = 'grid';  // 'slide' | 'grid'
-let gIdx   = 0;       // current obra index in filtered list
-let gSub   = 0;       // current sub-image index (multi-image obras)
+let gCat   = 'all';
+let gAvail = 'all';
+let gView  = 'grid';
+let gIdx   = 0;
+let gSub   = 0;
 
 function getFiltered() {
   return OBRAS.filter(o =>
@@ -386,7 +369,6 @@ function getFiltered() {
   );
 }
 
-/* ── DOM refs ─────────────────────────────────────────────── */
 const slideView    = document.getElementById('slide-view');
 const gridView     = document.getElementById('grid-view');
 const obraEmpty    = document.getElementById('obra-empty');
@@ -402,7 +384,6 @@ const slideAvail   = document.getElementById('slide-avail');
 const slideSubNav  = document.getElementById('slide-sub-nav');
 const slideSubCtr  = document.getElementById('slide-sub-counter');
 
-/* ── Render slideshow ─────────────────────────────────────── */
 function renderSlide() {
   const list = getFiltered();
 
@@ -422,7 +403,6 @@ function renderSlide() {
   const imgs = obra.imgs || (obra.img ? [obra.img] : []);
   gSub = Math.min(gSub, Math.max(imgs.length - 1, 0));
 
-  /* image */
   const prev = slideImgWrap.querySelector('img');
   if (prev) {
     prev.style.opacity = '0';
@@ -437,13 +417,10 @@ function renderSlide() {
     img.src = encodeURI(imgs[gSub]);
   }
 
-  /* counter */
   slideCounter.textContent = `${gIdx + 1} / ${list.length}`;
 
-  /* title */
   slideTitle.textContent = obra.title;
 
-  /* meta */
   let meta = '';
   if (obra.serie) meta += `<span>${obra.serie}</span>`;
   meta += `<span>${obra.dim}</span>`;
@@ -451,24 +428,19 @@ function renderSlide() {
   meta += `<span>${obra.year}</span>`;
   slideMeta.innerHTML = meta;
 
-  /* series description */
   const def = obra.serie && SERIES_INFO[obra.serie] ? SERIES_INFO[obra.serie] : '';
   slideDef.textContent = def;
   slideDef.style.display = def ? '' : 'none';
 
-  /* price */
   slidePrice.textContent = obra.price || '';
   slidePrice.style.display = obra.price ? '' : 'none';
 
-  /* nota */
   slideNota.textContent = obra.nota || '';
   slideNota.style.display = obra.nota ? '' : 'none';
 
-  /* availability */
   slideAvail.innerHTML =
     `<span class="avail-dot dot-${obra.avail}"></span>${AVAIL_LABEL[obra.avail]}`;
 
-  /* sub-image nav */
   if (imgs.length > 1) {
     slideSubNav.style.display = 'flex';
     slideSubCtr.textContent = `${gSub + 1} / ${imgs.length}`;
@@ -477,7 +449,6 @@ function renderSlide() {
   }
 }
 
-/* ── Lazy loading con IntersectionObserver ────────────────── */
 const lazyObserver = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (!entry.isIntersecting) return;
@@ -488,14 +459,13 @@ const lazyObserver = new IntersectionObserver((entries) => {
     img.removeAttribute('data-src');
     lazyObserver.unobserve(img);
   });
-}, { rootMargin: '300px 0px' }); // precarga 300px antes de que sea visible
+}, { rootMargin: '300px 0px' });
 
 function thumbSrc(filename) {
-  // Intenta cargar miniatura; si falla, usa original
+
   return 'thumbs/' + encodeURI(filename);
 }
 
-/* ── Render grid ──────────────────────────────────────────── */
 function renderGrid() {
   const list = getFiltered();
 
@@ -521,9 +491,9 @@ function renderGrid() {
     if (obra.img) {
       const img = document.createElement('img');
       img.alt = obra.title;
-      // Lazy: asigna src real al entrar en viewport
+
       img.dataset.src = thumbSrc(obra.img);
-      // Si miniatura no existe, cargar original
+
       img.onerror = function() {
         if (this.src !== encodeURI(obra.img)) {
           this.onerror = null;
@@ -553,7 +523,6 @@ function renderGrid() {
   });
 }
 
-/* ── View switcher ────────────────────────────────────────── */
 function setView(v) {
   gView = v;
   document.querySelectorAll('.view-btn').forEach(b =>
@@ -564,7 +533,6 @@ function setView(v) {
   else renderGrid();
 }
 
-/* ── Navigate obras ───────────────────────────────────────── */
 function goObra(delta) {
   const list = getFiltered();
   if (!list.length) return;
@@ -582,7 +550,6 @@ function goSub(delta) {
   renderSlide();
 }
 
-/* ── Hamburger menu ───────────────────────────────────────── */
 (function () {
   const btn = document.getElementById('hamburger');
   const nav = document.getElementById('mobile-nav');
@@ -599,7 +566,6 @@ function goSub(delta) {
   });
 })();
 
-/* ── Controls: category ───────────────────────────────────── */
 document.getElementById('cat-nav').addEventListener('click', e => {
   const btn = e.target.closest('.cat-btn');
   if (!btn) return;
@@ -611,8 +577,6 @@ document.getElementById('cat-nav').addEventListener('click', e => {
   setView('grid');
 });
 
-
-/* ── Controls: availability (desktop + mobile) ────────────── */
 function handleAvailClick(e) {
   const btn = e.target.closest('.avail-btn');
   if (!btn) return;
@@ -627,7 +591,6 @@ function handleAvailClick(e) {
 document.getElementById('avail-filter').addEventListener('click', handleAvailClick);
 document.getElementById('avail-filter-mobile').addEventListener('click', handleAvailClick);
 
-/* ── Controls: view toggle (desktop + mobile) ─────────────── */
 function handleViewToggle(e) {
   const btn = e.target.closest('.view-btn');
   if (!btn) return;
@@ -636,7 +599,6 @@ function handleViewToggle(e) {
 document.getElementById('view-toggle').addEventListener('click', handleViewToggle);
 document.getElementById('view-toggle-mobile').addEventListener('click', handleViewToggle);
 
-/* ── Mobile filter button ─────────────────────────────────── */
 const mobileFilterBtn = document.getElementById('mobile-filter-btn');
 const controlsSecondary = document.getElementById('controls-secondary');
 mobileFilterBtn.addEventListener('click', () => {
@@ -644,20 +606,17 @@ mobileFilterBtn.addEventListener('click', () => {
   mobileFilterBtn.classList.toggle('active', open);
 });
 
-/* ── Slide navigation buttons ─────────────────────────────── */
 document.getElementById('slide-prev-obra').addEventListener('click', () => goObra(-1));
 document.getElementById('slide-next-obra').addEventListener('click', () => goObra(1));
 document.getElementById('slide-sub-prev').addEventListener('click', () => goSub(-1));
 document.getElementById('slide-sub-next').addEventListener('click', () => goSub(1));
 
-/* ── Keyboard navigation ──────────────────────────────────── */
 document.addEventListener('keydown', e => {
   if (gView !== 'slide') return;
   if (e.key === 'ArrowRight' || e.key === 'ArrowDown') goObra(1);
   if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   goObra(-1);
 });
 
-/* ── Touch swipe ──────────────────────────────────────────── */
 let _tx = 0, _ty = 0;
 slideView.addEventListener('touchstart', e => {
   _tx = e.touches[0].clientX;
@@ -666,13 +625,12 @@ slideView.addEventListener('touchstart', e => {
 slideView.addEventListener('touchend', e => {
   const dx = e.changedTouches[0].clientX - _tx;
   const dy = e.changedTouches[0].clientY - _ty;
-  if (Math.abs(dy) > Math.abs(dx)) return;               // ignore vertical
-  if (dx > window.innerWidth * 0.55) { setView('grid'); return; } // long →  = back to grid
-  if (Math.abs(dx) > 48) goObra(dx < 0 ? 1 : -1);       // short ←→ = entre obras
+  if (Math.abs(dy) > Math.abs(dx)) return;
+  if (dx > window.innerWidth * 0.55) { setView('grid'); return; }
+  if (Math.abs(dx) > 48) goObra(dx < 0 ? 1 : -1);
 }, { passive: true });
 
-/* ── Init ─────────────────────────────────────────────────── */
 fetch('obras.json?v=' + Date.now())
   .then(r => r.json())
   .then(data => { OBRAS = data; renderGrid(); })
-  .catch(() => renderGrid()); // fallback: usa obras hardcodeadas
+  .catch(() => renderGrid());

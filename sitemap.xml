@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+
+  <url>
+    <loc>https://costemallecarrandi.github.io/costemallecarrandi/</loc>
+    <lastmod>2026-04-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+
+    <!-- Imágenes indexables por Google Images -->
+    <image:image>
+      <image:loc>https://costemallecarrandi.github.io/costemallecarrandi/CALACAZUL%202%20OLVERA.jpg</image:loc>
+      <image:title>CALACAZUL 2 "OLVERA" — Miguel Costemalle Carrandi</image:title>
+      <image:caption>Acrílico y pasteles de óleo sobre lino, 120×150 cm, 2024</image:caption>
+    </image:image>
+
+    <image:image>
+      <image:loc>https://costemallecarrandi.github.io/costemallecarrandi/LOU.jpg</image:loc>
+      <image:title>"LOU" — Miguel Costemalle Carrandi</image:title>
+      <image:caption>Acrílico y óleo sobre lino, 200×300 cm, 2024</image:caption>
+    </image:image>
+
+    <image:image>
+      <image:loc>https://costemallecarrandi.github.io/costemallecarrandi/UMBRAL.jpg</image:loc>
+      <image:title>"UMBRAL" — Miguel Costemalle Carrandi</image:title>
+      <image:caption>Óleos sobre hoja de concreto, 130×245 cm, 2025</image:caption>
+    </image:image>
+
+    <image:image>
+      <image:loc>https://costemallecarrandi.github.io/costemallecarrandi/ME%20DAS%20MI%20DOMINGO%201.jpg</image:loc>
+      <image:title>"¿ME DAS MI DOMINGO? 1" — Miguel Costemalle Carrandi</image:title>
+      <image:caption>Óleo sobre lino, 197×192 cm, 2026</image:caption>
+    </image:image>
+
+    <image:image>
+      <image:loc>https://costemallecarrandi.github.io/costemallecarrandi/ME%20DAS%20MI%20DOMINGO%202.jpg</image:loc>
+      <image:title>"¿ME DAS MI DOMINGO? 2" — Miguel Costemalle Carrandi</image:title>
+      <image:caption>Óleo sobre lino, 197×192 cm, 2026. Disponible.</image:caption>
+    </image:image>
+
+    <image:image>
+      <image:loc>https://costemallecarrandi.github.io/costemallecarrandi/INSTALACI%C3%93N%20MURCI%C3%89LAGOS%205.jpg</image:loc>
+      <image:title>INSTALACIÓN MURCIÉLAGOS — Miguel Costemalle Carrandi</image:title>
+      <image:caption>Escultura e instalación, dimensiones variables, 2024</image:caption>
+    </image:image>
+
+    <image:image>
+      <image:loc>https://costemallecarrandi.github.io/costemallecarrandi/PAREDES.jpg</image:loc>
+      <image:title>"PAREDES" — Miguel Costemalle Carrandi</image:title>
+      <image:caption>Carbón sobre papel de algodón, 60×70 cm, 2026</image:caption>
+    </image:image>
+
+    <image:image>
+      <image:loc>https://costemallecarrandi.github.io/costemallecarrandi/MURCI%C3%89LAGOS%201.jpg</image:loc>
+      <image:title>"MURCIÉLAGOS" — Miguel Costemalle Carrandi</image:title>
+      <image:caption>Grabado sobre hoja de algodón, 60×70 cm, 2025</image:caption>
+    </image:image>
+  </url>
+
+</urlset>
