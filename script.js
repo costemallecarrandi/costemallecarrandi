@@ -434,7 +434,7 @@ function renderSlide() {
     img.style.opacity = '0';
     slideImgWrap.appendChild(img);
     img.onload = () => { img.style.opacity = '1'; };
-    img.src = encodeURI(imgs[gSub]);
+    img.src = encodeURI(imgs[gSub]) + '?v=' + Date.now();
   }
 
   /* counter */
@@ -502,7 +502,7 @@ function renderGrid() {
 
     if (obra.img) {
       const img = document.createElement('img');
-      img.src     = encodeURI(obra.img);
+      img.src     = encodeURI(obra.img) + '?v=' + Date.now();
       img.alt     = obra.title;
       img.loading = 'lazy';
       wrap.appendChild(img);

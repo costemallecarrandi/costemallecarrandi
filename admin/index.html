@@ -418,7 +418,7 @@ function renderList() {
     row.className = 'obra-row';
     row.innerHTML = `
       ${o.img
-        ? `<img class="obra-thumb" src="../${encodeURI(o.img)}" alt="" onerror="this.style.display='none'">`
+        ? `<img class="obra-thumb" src="../${encodeURI(o.img)}?v=${Date.now()}" alt="" onerror="this.style.display='none'">`
         : `<div class="obra-thumb-placeholder"></div>`}
       <div class="obra-row-info">
         <div class="obra-row-title">${o.title}</div>
@@ -459,7 +459,7 @@ function openEdit(i) {
   if (o.img) {
     document.getElementById('img-current-name').textContent = o.img;
     const prev = document.getElementById('img-preview');
-    prev.src = '../' + encodeURI(o.img);
+    prev.src = '../' + encodeURI(o.img) + '?v=' + Date.now();
     prev.style.display = 'block';
     document.getElementById('img-label').textContent = 'Cambiar imagen';
   }
