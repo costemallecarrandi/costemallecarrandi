@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin — Miguel Costemalle Carrandi</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --ink: #111; --muted: #888; --border: #e0e0e0; --bg: #fff;
+      --bg2: #f7f7f7; --accent: #111; --accent-fg: #fff;
+      --green: #3a8c5a; --yellow: #b8870a; --red: #b03030;
+      --radius: 6px; --font: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+    }
+    body { font-family: var(--font); color: var(--ink); background: var(--bg2); min-height: 100vh; }
+
+    /* ── LOGIN ── */
+    #login-screen {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      min-height: 100vh; padding: 2rem;
+    }
+    #login-screen h1 { font-size: 1.1rem; font-weight: 600; margin-bottom: .25rem; }
+    #login-screen p  { font-size: .8rem; color: var(--muted); margin-bottom: 1.5rem; text-align: center; max-width: 320px; }
+    #login-screen input {
+      width: 100%; max-width: 360px; padding: .65rem .85rem;
+      border: 1px solid var(--border); border-radius: var(--radius);
+      font-size: .9rem; margin-bottom: .75rem; font-family: inherit;
+    }
+    #login-screen button {
+      width: 100%; max-width: 360px; padding: .65rem;
+      background: var(--accent); color: var(--accent-fg);
+      border: none; border-radius: var(--radius); font-size: .9rem;
+      cursor: pointer; font-family: inherit; font-weight: 500;
+    }
+    #login-screen .hint {
+      margin-top: 1rem; font-size: .75rem; color: var(--muted); text-align: center;
+    }
+    #login-screen .hint a { color: var(--ink); }
+    #login-error { color: var(--red); font-size: .8rem; margin-top: .5rem; display: none; }
+
+    /* ── SHELL ── */
+    #app { display: none; }
+    .topbar {
+      background: var(--bg); border-bottom: 1px solid var(--border);
+      padding: .75rem 1.5rem; display: flex; align-items: center; gap: 1rem;
+      position: sticky; top: 0; z-index: 10;
+    }
+    .topbar-title { font-size: .9rem; font-weight: 600; flex: 1; }
+    .topbar-sub { font-size: .75rem; color: var(--muted); }
+    .btn {
+      padding: .45rem .9rem; border-radius: var(--radius);
+      font-size: .82rem; cursor: pointer; border: none; font-family: inherit;
+      font-weight: 500; transition: opacity .15s;
+    }
+    .btn:hover { opacity: .8; }
+    .btn-primary { background: var(--accent); color: var(--accent-fg); }
+    .btn-ghost { background: transparent; color: var(--ink); border: 1px solid var(--border); }
+    .btn-danger { background: #fef2f2; color: var(--red); border: 1px solid #fecaca; }
+    .btn-sm { padding: .3rem .65rem; font-size: .78rem; }
+
+    /* ── MAIN ── */
+    .main { max-width: 960px; margin: 0 auto; padding: 2rem 1.5rem; }
+
+    /* ── OBRA LIST ── */
+    .list-header {
+      display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem;
+    }
+    .list-header h2 { font-size: 1rem; font-weight: 600; }
+    .obra-list { display: flex; flex-direction: column; gap: .5rem; }
+    .obra-row {
+      background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: .75rem 1rem; display: flex; align-items: center; gap: 1rem;
+      cursor: pointer; transition: border-color .15s;
+    }
+    .obra-row:hover { border-color: #bbb; }
+    .obra-thumb {
+      width: 52px; height: 52px; object-fit: cover;
+      border-radius: 3px; flex-shrink: 0; background: var(--bg2);
+    }
+    .obra-thumb-placeholder {
+      width: 52px; height: 52px; background: var(--bg2);
+      border-radius: 3px; flex-shrink: 0;
+    }
+    .obra-row-info { flex: 1; min-width: 0; }
+    .obra-row-title { font-size: .88rem; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .obra-row-sub { font-size: .75rem; color: var(--muted); margin-top: .1rem; }
+    .avail-badge {
+      font-size: .7rem; font-weight: 600; padding: .2rem .5rem;
+      border-radius: 99px; flex-shrink: 0; white-space: nowrap;
+    }
+    .badge-green  { background: #dcfce7; color: var(--green); }
+    .badge-yellow { background: #fef9c3; color: var(--yellow); }
+    .badge-red    { background: #fee2e2; color: var(--red); }
+
+    /* ── FORM ── */
+    #form-screen { display: none; }
+    .form-header {
+      display: flex; align-items: center; gap: .75rem; margin-bottom: 1.75rem;
+    }
+    .form-header h2 { font-size: 1rem; font-weight: 600; flex: 1; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    @media (max-width: 600px) { .form-grid { grid-template-columns: 1fr; } }
+    .form-full { grid-column: 1 / -1; }
+    .field { display: flex; flex-direction: column; gap: .35rem; }
+    .field label { font-size: .78rem; font-weight: 500; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
+    .field input, .field select, .field textarea {
+      padding: .55rem .75rem; border: 1px solid var(--border);
+      border-radius: var(--radius); font-size: .88rem; font-family: inherit;
+      background: var(--bg); color: var(--ink); transition: border-color .15s;
+    }
+    .field input:focus, .field select:focus, .field textarea:focus {
+      outline: none; border-color: #888;
+    }
+    .field textarea { resize: vertical; min-height: 70px; }
+
+    /* Image upload */
+    .img-upload-area {
+      border: 2px dashed var(--border); border-radius: var(--radius);
+      padding: 1.5rem; text-align: center; cursor: pointer;
+      transition: border-color .15s; background: var(--bg);
+    }
+    .img-upload-area:hover { border-color: #999; }
+    .img-upload-area.dragover { border-color: var(--ink); background: #f5f5f5; }
+    .img-upload-area p { font-size: .82rem; color: var(--muted); margin-top: .5rem; }
+    .img-upload-area input { display: none; }
+    #img-preview {
+      max-height: 180px; max-width: 100%; border-radius: 4px;
+      display: none; margin: 0 auto .75rem;
+    }
+    .img-name { font-size: .8rem; color: var(--ink); font-weight: 500; }
+
+    /* multi-image list */
+    .imgs-list { display: flex; flex-direction: column; gap: .4rem; margin-top: .5rem; }
+    .imgs-list-item {
+      display: flex; align-items: center; gap: .5rem;
+      background: var(--bg2); border-radius: 4px; padding: .35rem .6rem;
+      font-size: .82rem;
+    }
+    .imgs-list-item span { flex: 1; }
+    .imgs-list-item button { background: none; border: none; cursor: pointer; color: var(--red); font-size: .9rem; }
+
+    .form-actions { display: flex; gap: .75rem; margin-top: 1.75rem; flex-wrap: wrap; }
+
+    /* ── SAVING OVERLAY ── */
+    #saving-overlay {
+      display: none; position: fixed; inset: 0; background: rgba(255,255,255,.85);
+      z-index: 100; align-items: center; justify-content: center; flex-direction: column; gap: 1rem;
+    }
+    #saving-overlay.visible { display: flex; }
+    .spinner {
+      width: 36px; height: 36px; border: 3px solid var(--border);
+      border-top-color: var(--ink); border-radius: 50%;
+      animation: spin .7s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    #saving-msg { font-size: .9rem; color: var(--ink); }
+
+    /* ── TOAST ── */
+    #toast {
+      position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%);
+      background: var(--ink); color: #fff; padding: .6rem 1.2rem;
+      border-radius: var(--radius); font-size: .85rem; z-index: 200;
+      opacity: 0; transition: opacity .25s; pointer-events: none;
+    }
+    #toast.show { opacity: 1; }
+  </style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <h1>Panel de administración</h1>
+  <p>Ingresa tu token de GitHub para editar las obras del portafolio.</p>
+  <input type="password" id="token-input" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" autocomplete="off"/>
+  <button onclick="doLogin()">Entrar</button>
+  <p id="login-error">Token incorrecto o sin permisos. Verifica que tenga acceso a este repositorio.</p>
+  <p class="hint">
+    Genera tu token en
+    <a href="https://github.com/settings/tokens/new?scopes=repo&description=Admin+Portafolio" target="_blank">
+      GitHub → Settings → Developer Settings → Personal Access Tokens
+    </a>
+    (scope: <strong>repo</strong>)
+  </p>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <div class="topbar">
+    <div>
+      <div class="topbar-title">Portafolio — Admin</div>
+      <div class="topbar-sub">Miguel Costemalle Carrandi</div>
+    </div>
+    <a href="https://costemallecarrandi.github.io/costemallecarrandi/" target="_blank" class="btn btn-ghost btn-sm">Ver sitio ↗</a>
+    <button class="btn btn-ghost btn-sm" onclick="doLogout()">Salir</button>
+  </div>
+
+  <div class="main">
+    <!-- LIST VIEW -->
+    <div id="list-screen">
+      <div class="list-header">
+        <h2 id="list-count">Obras</h2>
+        <button class="btn btn-primary" onclick="openNew()">+ Nueva obra</button>
+      </div>
+      <div class="obra-list" id="obra-list"></div>
+    </div>
+
+    <!-- FORM VIEW -->
+    <div id="form-screen">
+      <div class="form-header">
+        <button class="btn btn-ghost btn-sm" onclick="backToList()">← Volver</button>
+        <h2 id="form-title">Nueva obra</h2>
+      </div>
+
+      <div class="form-grid">
+        <div class="field form-full">
+          <label>Título</label>
+          <input type="text" id="f-title" placeholder='"Nombre de la obra"'/>
+        </div>
+        <div class="field">
+          <label>Categoría</label>
+          <select id="f-tipo">
+            <option value="pintura">Pintura</option>
+            <option value="dibujo">Dibujo</option>
+            <option value="grabado">Grabado</option>
+            <option value="escultura">Escultura</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Disponibilidad</label>
+          <select id="f-avail">
+            <option value="green">Disponible</option>
+            <option value="yellow">Para exhibir</option>
+            <option value="red">No disponible</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Dimensiones</label>
+          <input type="text" id="f-dim" placeholder="100×80 cm"/>
+        </div>
+        <div class="field">
+          <label>Año</label>
+          <input type="text" id="f-year" placeholder="2026"/>
+        </div>
+        <div class="field form-full">
+          <label>Técnica</label>
+          <input type="text" id="f-tecnica" placeholder="Óleo sobre lino"/>
+        </div>
+        <div class="field">
+          <label>Precio (opcional)</label>
+          <input type="text" id="f-price" placeholder="30,000 MXN"/>
+        </div>
+        <div class="field">
+          <label>Serie (opcional)</label>
+          <input type="text" id="f-serie" placeholder="Resantes, Carbones…"/>
+        </div>
+        <div class="field form-full">
+          <label>Nota adicional (opcional)</label>
+          <textarea id="f-nota" placeholder="Nota sobre precio de serie, condiciones…"></textarea>
+        </div>
+
+        <!-- Main image -->
+        <div class="field form-full">
+          <label>Imagen principal</label>
+          <div class="img-upload-area" id="upload-area" onclick="document.getElementById('img-input').click()">
+            <img id="img-preview"/>
+            <p id="img-label">Haz clic o arrastra una imagen aquí</p>
+            <input type="file" id="img-input" accept="image/*"/>
+          </div>
+          <p style="font-size:.75rem;color:var(--muted);margin-top:.3rem">
+            Nombre del archivo actual: <span id="img-current-name" style="color:var(--ink)">—</span>
+          </p>
+        </div>
+
+        <!-- Extra images -->
+        <div class="field form-full" id="extra-imgs-section">
+          <label>Imágenes adicionales (galería)</label>
+          <div class="imgs-list" id="imgs-extra-list"></div>
+          <button class="btn btn-ghost btn-sm" style="margin-top:.5rem;align-self:flex-start"
+            onclick="document.getElementById('imgs-extra-input').click()">+ Agregar imágenes</button>
+          <input type="file" id="imgs-extra-input" accept="image/*" multiple style="display:none"/>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button class="btn btn-primary" onclick="saveObra()">Guardar y publicar</button>
+        <button class="btn btn-ghost" onclick="backToList()">Cancelar</button>
+        <button class="btn btn-danger" id="btn-delete" onclick="deleteObra()" style="margin-left:auto">Eliminar obra</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SAVING -->
+<div id="saving-overlay">
+  <div class="spinner"></div>
+  <div id="saving-msg">Guardando…</div>
+</div>
+
+<!-- TOAST -->
+<div id="toast"></div>
+
+<script>
+'use strict';
+
+/* ── CONFIG ── */
+const REPO_OWNER = 'costemallecarrandi';
+const REPO_NAME  = 'costemallecarrandi';
+const OBRAS_PATH = 'obras.json';
+
+/* ── STATE ── */
+let token = '';
+let obras  = [];
+let editIdx = -1;   // -1 = nueva obra
+let newImgFile = null;
+let extraImgFiles = [];   // { file, name } para nuevas
+let extraImgsKeep = [];   // nombres que ya existían y se mantienen
+
+/* ── AUTH ── */
+function doLogin() {
+  const t = document.getElementById('token-input').value.trim();
+  if (!t) return;
+  setSaving('Verificando…');
+  ghGet(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}`, t)
+    .then(() => {
+      token = t;
+      localStorage.setItem('admin_token', t);
+      hideSaving();
+      showApp();
+    })
+    .catch(() => {
+      hideSaving();
+      document.getElementById('login-error').style.display = 'block';
+    });
+}
+function doLogout() {
+  token = '';
+  localStorage.removeItem('admin_token');
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('login-screen').style.display = 'flex';
+}
+document.getElementById('token-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter') doLogin();
+});
+
+/* ── GITHUB API ── */
+function ghGet(url, t) {
+  return fetch(url, { headers: { Authorization: 'token ' + (t || token), Accept: 'application/vnd.github.v3+json' } })
+    .then(r => { if (!r.ok) throw r; return r.json(); });
+}
+function ghPut(url, body) {
+  return fetch(url, {
+    method: 'PUT',
+    headers: { Authorization: 'token ' + token, Accept: 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  }).then(r => { if (!r.ok) throw r; return r.json(); });
+}
+function ghDel(url, body) {
+  return fetch(url, {
+    method: 'DELETE',
+    headers: { Authorization: 'token ' + token, Accept: 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  }).then(r => { if (!r.ok) throw r; return r.json(); });
+}
+
+async function getFileSha(path) {
+  try {
+    const data = await ghGet(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${encodeURIComponent(path)}`);
+    return data.sha;
+  } catch { return null; }
+}
+
+async function uploadFile(path, base64, msg) {
+  const sha = await getFileSha(path);
+  const body = { message: msg, content: base64 };
+  if (sha) body.sha = sha;
+  return ghPut(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${encodeURIComponent(path)}`, body);
+}
+
+async function saveObrasJson(newObras, msg) {
+  const sha = await getFileSha(OBRAS_PATH);
+  const content = btoa(unescape(encodeURIComponent(JSON.stringify(newObras, null, 2))));
+  const body = { message: msg, content };
+  if (sha) body.sha = sha;
+  return ghPut(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${OBRAS_PATH}`, body);
+}
+
+/* ── APP INIT ── */
+function showApp() {
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+  loadObras();
+}
+
+function loadObras() {
+  setSaving('Cargando obras…');
+  ghGet(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${OBRAS_PATH}`)
+    .then(data => {
+      const json = decodeURIComponent(escape(atob(data.content.replace(/\n/g,''))));
+      obras = JSON.parse(json);
+      hideSaving();
+      renderList();
+    })
+    .catch(() => { hideSaving(); toast('Error al cargar obras.json', true); });
+}
+
+/* ── LIST ── */
+const AVAIL_LABEL = { green: 'Disponible', yellow: 'Para exhibir', red: 'No disponible' };
+const TIPO_LABEL  = { pintura: 'Pintura', dibujo: 'Dibujo', grabado: 'Grabado', escultura: 'Escultura' };
+
+function renderList() {
+  document.getElementById('list-screen').style.display = 'block';
+  document.getElementById('form-screen').style.display = 'none';
+  document.getElementById('list-count').textContent = `Obras (${obras.length})`;
+  const container = document.getElementById('obra-list');
+  container.innerHTML = '';
+  obras.forEach((o, i) => {
+    const row = document.createElement('div');
+    row.className = 'obra-row';
+    row.innerHTML = `
+      ${o.img
+        ? `<img class="obra-thumb" src="../${encodeURI(o.img)}" alt="" onerror="this.style.display='none'">`
+        : `<div class="obra-thumb-placeholder"></div>`}
+      <div class="obra-row-info">
+        <div class="obra-row-title">${o.title}</div>
+        <div class="obra-row-sub">${TIPO_LABEL[o.tipo] || o.tipo} · ${o.year} · ${o.dim}</div>
+      </div>
+      <span class="avail-badge badge-${o.avail}">${AVAIL_LABEL[o.avail]}</span>
+    `;
+    row.addEventListener('click', () => openEdit(i));
+    container.appendChild(row);
+  });
+}
+
+/* ── FORM ── */
+function openNew() {
+  editIdx = -1;
+  resetForm();
+  document.getElementById('form-title').textContent = 'Nueva obra';
+  document.getElementById('btn-delete').style.display = 'none';
+  document.getElementById('list-screen').style.display = 'none';
+  document.getElementById('form-screen').style.display = 'block';
+}
+
+function openEdit(i) {
+  editIdx = i;
+  const o = obras[i];
+  resetForm();
+  document.getElementById('form-title').textContent = 'Editar obra';
+  document.getElementById('btn-delete').style.display = 'inline-block';
+  document.getElementById('f-title').value   = o.title  || '';
+  document.getElementById('f-tipo').value    = o.tipo   || 'pintura';
+  document.getElementById('f-avail').value   = o.avail  || 'green';
+  document.getElementById('f-dim').value     = o.dim    || '';
+  document.getElementById('f-year').value    = o.year   || '';
+  document.getElementById('f-tecnica').value = o.tecnica|| '';
+  document.getElementById('f-price').value   = o.price  || '';
+  document.getElementById('f-serie').value   = o.serie  || '';
+  document.getElementById('f-nota').value    = o.nota   || '';
+  if (o.img) {
+    document.getElementById('img-current-name').textContent = o.img;
+    const prev = document.getElementById('img-preview');
+    prev.src = '../' + encodeURI(o.img);
+    prev.style.display = 'block';
+    document.getElementById('img-label').textContent = 'Cambiar imagen';
+  }
+  extraImgsKeep = o.imgs ? [...o.imgs] : [];
+  renderExtraImgs();
+  document.getElementById('list-screen').style.display = 'none';
+  document.getElementById('form-screen').style.display = 'block';
+}
+
+function resetForm() {
+  ['f-title','f-dim','f-year','f-tecnica','f-price','f-serie','f-nota'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
+  document.getElementById('f-tipo').value  = 'pintura';
+  document.getElementById('f-avail').value = 'green';
+  document.getElementById('img-current-name').textContent = '—';
+  const prev = document.getElementById('img-preview');
+  prev.src = ''; prev.style.display = 'none';
+  document.getElementById('img-label').textContent = 'Haz clic o arrastra una imagen aquí';
+  newImgFile = null;
+  extraImgFiles = [];
+  extraImgsKeep = [];
+  renderExtraImgs();
+}
+
+function backToList() {
+  document.getElementById('form-screen').style.display = 'none';
+  document.getElementById('list-screen').style.display = 'block';
+}
+
+/* ── Image upload ── */
+const uploadArea  = document.getElementById('upload-area');
+const imgInput    = document.getElementById('img-input');
+const extraInput  = document.getElementById('imgs-extra-input');
+
+imgInput.addEventListener('change', e => {
+  const file = e.target.files[0]; if (!file) return;
+  newImgFile = file;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    const prev = document.getElementById('img-preview');
+    prev.src = ev.target.result; prev.style.display = 'block';
+    document.getElementById('img-label').textContent = file.name;
+    document.getElementById('img-current-name').textContent = file.name;
+  };
+  reader.readAsDataURL(file);
+});
+
+uploadArea.addEventListener('dragover', e => { e.preventDefault(); uploadArea.classList.add('dragover'); });
+uploadArea.addEventListener('dragleave', () => uploadArea.classList.remove('dragover'));
+uploadArea.addEventListener('drop', e => {
+  e.preventDefault(); uploadArea.classList.remove('dragover');
+  const file = e.dataTransfer.files[0]; if (!file) return;
+  imgInput.files = e.dataTransfer.files;
+  imgInput.dispatchEvent(new Event('change'));
+});
+
+extraInput.addEventListener('change', e => {
+  Array.from(e.target.files).forEach(file => {
+    extraImgFiles.push({ file, name: file.name });
+  });
+  renderExtraImgs();
+});
+
+function renderExtraImgs() {
+  const list = document.getElementById('imgs-extra-list');
+  list.innerHTML = '';
+  extraImgsKeep.forEach((name, i) => {
+    const item = document.createElement('div');
+    item.className = 'imgs-list-item';
+    item.innerHTML = `<span>📷 ${name}</span><button onclick="removeExtraKeep(${i})">✕</button>`;
+    list.appendChild(item);
+  });
+  extraImgFiles.forEach((entry, i) => {
+    const item = document.createElement('div');
+    item.className = 'imgs-list-item';
+    item.innerHTML = `<span>⬆ ${entry.name} <em style="color:var(--muted)">(nuevo)</em></span><button onclick="removeExtraNew(${i})">✕</button>`;
+    list.appendChild(item);
+  });
+}
+function removeExtraKeep(i) { extraImgsKeep.splice(i, 1); renderExtraImgs(); }
+function removeExtraNew(i) { extraImgFiles.splice(i, 1); renderExtraImgs(); }
+
+/* ── SAVE ── */
+async function saveObra() {
+  const title = document.getElementById('f-title').value.trim();
+  if (!title) { toast('El título es obligatorio.', true); return; }
+
+  setSaving('Subiendo imágenes…');
+
+  let imgName = editIdx >= 0 ? (obras[editIdx].img || '') : '';
+
+  // Upload main image
+  if (newImgFile) {
+    imgName = newImgFile.name;
+    const b64 = await fileToBase64(newImgFile);
+    try {
+      await uploadFile(imgName, b64, `Sube imagen: ${imgName}`);
+    } catch(e) {
+      hideSaving();
+      toast('Error al subir imagen principal.', true);
+      return;
+    }
+  }
+
+  // Upload extra images
+  const allExtraNames = [...extraImgsKeep];
+  for (const entry of extraImgFiles) {
+    setSaving(`Subiendo ${entry.name}…`);
+    try {
+      const b64 = await fileToBase64(entry.file);
+      await uploadFile(entry.name, b64, `Sube imagen: ${entry.name}`);
+      allExtraNames.push(entry.name);
+    } catch(e) {
+      hideSaving();
+      toast(`Error al subir ${entry.name}.`, true);
+      return;
+    }
+  }
+
+  // Build obra object
+  const precio = document.getElementById('f-price').value.trim();
+  const nota   = document.getElementById('f-nota').value.trim();
+  const serie  = document.getElementById('f-serie').value.trim();
+  const titleVal = title;
+  const id = titleVal.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g,'');
+
+  const obra = {
+    id: editIdx >= 0 ? obras[editIdx].id : id,
+    tipo:    document.getElementById('f-tipo').value,
+    title:   titleVal,
+    dim:     document.getElementById('f-dim').value.trim(),
+    tecnica: document.getElementById('f-tecnica').value.trim(),
+    year:    document.getElementById('f-year').value.trim(),
+    price:   precio || null,
+    avail:   document.getElementById('f-avail').value,
+    serie:   serie || null,
+    img:     imgName || null,
+  };
+  if (nota) obra.nota = nota;
+  if (allExtraNames.length > 1) obra.imgs = allExtraNames;
+
+  // Update obras array
+  if (editIdx >= 0) obras[editIdx] = obra;
+  else obras.unshift(obra);
+
+  setSaving('Guardando catálogo…');
+  try {
+    await saveObrasJson(obras, `${editIdx >= 0 ? 'Actualiza' : 'Agrega'}: ${title}`);
+    hideSaving();
+    toast('¡Publicado! Los cambios se ven en ~1 minuto.');
+    backToList();
+    renderList();
+  } catch(e) {
+    hideSaving();
+    toast('Error al guardar obras.json.', true);
+  }
+}
+
+async function deleteObra() {
+  if (!confirm('¿Eliminar esta obra del catálogo?')) return;
+  obras.splice(editIdx, 1);
+  setSaving('Eliminando…');
+  try {
+    await saveObrasJson(obras, `Elimina obra del catálogo`);
+    hideSaving();
+    toast('Obra eliminada.');
+    backToList();
+    renderList();
+  } catch(e) {
+    hideSaving();
+    toast('Error al guardar.', true);
+  }
+}
+
+/* ── HELPERS ── */
+function fileToBase64(file) {
+  return new Promise((res, rej) => {
+    const reader = new FileReader();
+    reader.onload = e => res(e.target.result.split(',')[1]);
+    reader.onerror = rej;
+    reader.readAsDataURL(file);
+  });
+}
+
+function setSaving(msg) {
+  document.getElementById('saving-msg').textContent = msg;
+  document.getElementById('saving-overlay').classList.add('visible');
+}
+function hideSaving() { document.getElementById('saving-overlay').classList.remove('visible'); }
+
+function toast(msg, err) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.style.background = err ? '#b03030' : '#111';
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 3000);
+}
+
+/* ── AUTO LOGIN ── */
+const saved = localStorage.getItem('admin_token');
+if (saved) {
+  document.getElementById('token-input').value = saved;
+  token = saved;
+  showApp();
+}
+</script>
+</body>
+</html>

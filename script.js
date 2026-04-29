@@ -21,10 +21,9 @@ const SERIES_INFO = {
 const IMG = f => f;
 
 /* ── CATÁLOGO ──────────────────────────────────────────────────
-   tipo: 'pintura' | 'dibujo' | 'grabado' | 'escultura' | 'exposicion'
-   avail: 'green' (disponible) | 'yellow' (para exhibir) | 'red' (no disponible)
+   Cargado desde obras.json (editable desde /admin/)
    ─────────────────────────────────────────────────────────── */
-const OBRAS = [
+let OBRAS = [
   /* ── PINTURAS ─────────────────────────────────────────── */
    {
     id: 'pared-maria-1', tipo: 'pintura',
@@ -647,4 +646,7 @@ slideView.addEventListener('touchend', e => {
 }, { passive: true });
 
 /* ── Init ─────────────────────────────────────────────────── */
-renderGrid();
+fetch('obras.json?v=' + Date.now())
+  .then(r => r.json())
+  .then(data => { OBRAS = data; renderGrid(); })
+  .catch(() => renderGrid()); // fallback: usa obras hardcodeadas
