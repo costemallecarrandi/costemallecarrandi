@@ -1,18 +1,58 @@
 'use strict';
 
-const AVAIL_LABEL = {
-  green:  'Disponible',
-  yellow: 'Disponible para exhibir',
-  red:    'No disponible'
+const T = {
+  es: {
+    nav_obra:'obra', nav_artista:'artista', nav_contacto:'contacto',
+    mob_obra:'Obra', mob_artista:'Artista', mob_contacto:'Contacto',
+    cat_all:'Todo', cat_pintura:'Pinturas', cat_dibujo:'Dibujo', cat_grabado:'Grabado', cat_escultura:'Escultura',
+    avail_all:'Todos', avail_green:'Disponible', avail_yellow:'Para exhibir', avail_red:'No disponible',
+    label_green:'Disponible', label_yellow:'Disponible para exhibir', label_red:'No disponible',
+    series_calacas:'Esta serie describe los sucesos cotidianos a través del pensar de las calaveras, donde cada calavera canta un poema.',
+    series_resantes:'Toda esta serie cuenta con un precio de adquisición completa de $85,000 MXN.',
+    empty:'No hay obras en esta selección.',
+    artista_role:'Artista visual, escritor y escultor',
+    artista_bio1:'Miguel Costemalle Carrandi es un artista visual y escritor mexicano cuya práctica se desarrolla entre México y Europa. Desde temprana edad exploró distintas disciplinas tales como la literatura, fotografía, música y pintura, movido más por la necesidad de expresar emociones que por una intención profesional. Con el tiempo, encontró su voz al unir la palabra y la imagen, haciendo de la literatura y el arte un solo lenguaje.',
+    artista_bio2:'Su trabajo nace de una mirada romántica y poética que dialoga con lo contemporáneo sin perder carga emocional. Convencido de que el valor sentimental se ha diluido en muchas prácticas actuales, integra texto en sus pinturas como un gesto de resistencia: un recordatorio de cómo se siente.',
+    artista_bio3:'En su desarrollo reciente, su práctica ha evolucionado hacia una exploración más amplia de la materialidad y el espacio, incorporando escultura e instalación. Ha trabajado con materiales como acero, bronce y superficies intervenidas, llevando su lenguaje a formatos de mayor escala y dimensión física.',
+    artista_bio4:'Paralelamente, ha consolidado una presencia activa en contextos expositivos y colaborativos, construyendo un cuerpo de obra que mantiene coherencia entre lo íntimo y lo estructural. Actualmente, su trabajo se orienta hacia la expansión de su lenguaje visual y literario, con interés en proyectos de mayor alcance internacional, sin desprenderse de su eje central: la emoción como materia.',
+    formacion:'Formación', formacion_content:'B.A. in Visual Arts and Painting<br>NABA — Nuova Accademia di Belle Arti, Milán',
+    especialidad:'Especialidad', especialidad_content:'Pintura, instalación y escultura en acero oxidado, cemento, lino y madera.',
+    lineas:'Líneas de investigación', lineas_content:'Color, materia, memoria y deseo.',
+    exposiciones:'Exposiciones recientes',
+    exp_list:'<li>El Arte del Gran Premio, Ciudad de México (2025)</li><li>Exposición individual, Ciudad de México (2024)</li><li>Exposición individual, Milán (2024)</li>',
+    idiomas:'Idiomas', idiomas_content:'Español, inglés, italiano, francés.',
+    footer_contacto:'Contacto', footer_ubicacion:'Ubicación', footer_redes:'Redes', footer_ciudad:'Ciudad de México / Milán',
+  },
+  en: {
+    nav_obra:'works', nav_artista:'artist', nav_contacto:'contact',
+    mob_obra:'Works', mob_artista:'Artist', mob_contacto:'Contact',
+    cat_all:'All', cat_pintura:'Paintings', cat_dibujo:'Drawing', cat_grabado:'Printmaking', cat_escultura:'Sculpture',
+    avail_all:'All', avail_green:'Available', avail_yellow:'For exhibition', avail_red:'Not available',
+    label_green:'Available', label_yellow:'Available for exhibition', label_red:'Not available',
+    series_calacas:'This series describes everyday events through the thoughts of skulls, where each skull sings a poem.',
+    series_resantes:'This entire series is available for full acquisition at $85,000 MXN.',
+    empty:'No works found for this selection.',
+    artista_role:'Visual artist, writer and sculptor',
+    artista_bio1:'Miguel Costemalle Carrandi is a Mexican visual artist and writer whose practice unfolds between Mexico and Europe. From an early age he explored different disciplines such as literature, photography, music and painting, driven more by the need to express emotions than by professional ambition. Over time, he found his voice in uniting word and image, making literature and art a single language.',
+    artista_bio2:'His work stems from a romantic and poetic perspective that engages with the contemporary without losing emotional weight. Convinced that sentimental value has been diluted in many current practices, he integrates text into his paintings as a gesture of resistance: a reminder of how it feels.',
+    artista_bio3:'In his recent development, his practice has evolved toward a broader exploration of materiality and space, incorporating sculpture and installation. He has worked with materials such as steel, bronze and intervened surfaces, bringing his language to larger scale and physical dimension.',
+    artista_bio4:'In parallel, he has built an active presence in exhibition and collaborative contexts, developing a body of work that maintains coherence between the intimate and the structural. Currently, his work moves toward the expansion of his visual and literary language, with interest in broader international projects, without departing from its central axis: emotion as matter.',
+    formacion:'Education', formacion_content:'B.A. in Visual Arts and Painting<br>NABA — Nuova Accademia di Belle Arti, Milan',
+    especialidad:'Specialty', especialidad_content:'Painting, installation and sculpture in oxidized steel, cement, linen and wood.',
+    lineas:'Research areas', lineas_content:'Color, matter, memory and desire.',
+    exposiciones:'Recent exhibitions',
+    exp_list:'<li>El Arte del Gran Premio, Mexico City (2025)</li><li>Solo exhibition, Mexico City (2024)</li><li>Solo exhibition, Milan (2024)</li>',
+    idiomas:'Languages', idiomas_content:'Spanish, English, Italian, French.',
+    footer_contacto:'Contact', footer_ubicacion:'Location', footer_redes:'Social', footer_ciudad:'Mexico City / Milan',
+  }
 };
 
-const SERIES_INFO = {
-  'La caída al bailar de las calacas': 'Esta serie describe los sucesos cotidianos a través del pensar de las calaveras, donde cada calavera canta un poema.',
-  'Resantes': 'Toda esta serie cuenta con un precio de adquisición completa de $85,000 MXN.',
-  'Murciélagos': null,
-  'Carbones': null,
-  'Pared Maria': null,
+const SERIES_KEYS = {
+  'La caída al bailar de las calacas': 'series_calacas',
+  'Resantes': 'series_resantes',
 };
+
+let gLang = localStorage.getItem('lang') || 'es';
 
 const IMG = f => f;
 
@@ -383,6 +423,9 @@ const slideNota    = document.getElementById('slide-nota');
 const slideAvail   = document.getElementById('slide-avail');
 const slideSubNav  = document.getElementById('slide-sub-nav');
 const slideSubCtr  = document.getElementById('slide-sub-counter');
+const lbOverlay    = document.getElementById('lb-overlay');
+const lbImg        = document.getElementById('lb-img');
+const lbClose      = document.getElementById('lb-close');
 
 function renderSlide() {
   const list = getFiltered();
@@ -428,7 +471,8 @@ function renderSlide() {
   meta += `<span>${obra.year}</span>`;
   slideMeta.innerHTML = meta;
 
-  const def = obra.serie && SERIES_INFO[obra.serie] ? SERIES_INFO[obra.serie] : '';
+  const serieKey = obra.serie && SERIES_KEYS[obra.serie];
+  const def = serieKey ? T[gLang][serieKey] : '';
   slideDef.textContent = def;
   slideDef.style.display = def ? '' : 'none';
 
@@ -439,7 +483,7 @@ function renderSlide() {
   slideNota.style.display = obra.nota ? '' : 'none';
 
   slideAvail.innerHTML =
-    `<span class="avail-dot dot-${obra.avail}"></span>${AVAIL_LABEL[obra.avail]}`;
+    `<span class="avail-dot dot-${obra.avail}"></span>${T[gLang]['label_' + obra.avail]}`;
 
   if (imgs.length > 1) {
     slideSubNav.style.display = 'flex';
@@ -521,6 +565,35 @@ function renderGrid() {
     });
     obraGrid.appendChild(item);
   });
+}
+
+function applyLang() {
+  const t = T[gLang];
+  document.documentElement.lang = gLang;
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const v = t[el.dataset.i18n];
+    if (v !== undefined) el.textContent = v;
+  });
+  document.querySelectorAll('[data-i18n-html]').forEach(el => {
+    const v = t[el.dataset.i18nHtml];
+    if (v !== undefined) el.innerHTML = v;
+  });
+  document.querySelectorAll('.lang-btn').forEach(b =>
+    b.classList.toggle('active', b.dataset.lang === gLang)
+  );
+  if (gView === 'slide') renderSlide();
+}
+
+function openLightbox(src) {
+  lbImg.src = src;
+  lbOverlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox() {
+  lbOverlay.classList.remove('open');
+  document.body.style.overflow = '';
+  setTimeout(() => { lbImg.src = ''; }, 300);
 }
 
 function setView(v) {
@@ -612,9 +685,25 @@ document.getElementById('slide-sub-prev').addEventListener('click', () => goSub(
 document.getElementById('slide-sub-next').addEventListener('click', () => goSub(1));
 
 document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { closeLightbox(); return; }
   if (gView !== 'slide') return;
   if (e.key === 'ArrowRight' || e.key === 'ArrowDown') goObra(1);
   if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   goObra(-1);
+});
+
+slideImgWrap.addEventListener('click', () => {
+  const img = slideImgWrap.querySelector('img');
+  if (img && img.src) openLightbox(img.src);
+});
+lbOverlay.addEventListener('click', closeLightbox);
+lbClose.addEventListener('click', e => { e.stopPropagation(); closeLightbox(); });
+
+document.getElementById('lang-toggle').addEventListener('click', e => {
+  const btn = e.target.closest('.lang-btn');
+  if (!btn) return;
+  gLang = btn.dataset.lang;
+  localStorage.setItem('lang', gLang);
+  applyLang();
 });
 
 let _tx = 0, _ty = 0;
@@ -630,6 +719,7 @@ slideView.addEventListener('touchend', e => {
   if (Math.abs(dx) > 48) goObra(dx < 0 ? 1 : -1);
 }, { passive: true });
 
+applyLang();
 fetch('obras.json?v=' + Date.now())
   .then(r => r.json())
   .then(data => { OBRAS = data; renderGrid(); })

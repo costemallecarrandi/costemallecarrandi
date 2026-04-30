@@ -119,18 +119,22 @@
   <header class="header" id="main-header">
     <a href="#" class="header-name">Miguel Costemalle Carrandi</a>
     <nav class="header-nav">
-      <a href="#obra">obra</a>
-      <a href="#artista">artista</a>
-      <a href="#contacto">contacto</a>
+      <a href="#obra" data-i18n="nav_obra">obra</a>
+      <a href="#artista" data-i18n="nav_artista">artista</a>
+      <a href="#contacto" data-i18n="nav_contacto">contacto</a>
     </nav>
+    <div class="lang-toggle" id="lang-toggle">
+      <button class="lang-btn" data-lang="es">ES</button>
+      <button class="lang-btn" data-lang="en">EN</button>
+    </div>
     <button class="hamburger" id="hamburger" aria-label="Menú">
       <span></span><span></span><span></span>
     </button>
   </header>
   <div class="mobile-nav" id="mobile-nav">
-    <a href="#obra" class="mobile-nav-link">Obra</a>
-    <a href="#artista" class="mobile-nav-link">Artista</a>
-    <a href="#contacto" class="mobile-nav-link">Contacto</a>
+    <a href="#obra" class="mobile-nav-link" data-i18n="mob_obra">Obra</a>
+    <a href="#artista" class="mobile-nav-link" data-i18n="mob_artista">Artista</a>
+    <a href="#contacto" class="mobile-nav-link" data-i18n="mob_contacto">Contacto</a>
   </div>
 
   <!-- ── OBRA ─────────────────────────────────────────────── -->
@@ -141,25 +145,25 @@
 
       <!-- Category tabs -->
       <nav class="cat-nav" id="cat-nav">
-        <button class="cat-btn active" data-cat="all">Todo</button>
-        <button class="cat-btn" data-cat="pintura">Pinturas</button>
-        <button class="cat-btn" data-cat="dibujo">Dibujo</button>
-        <button class="cat-btn" data-cat="grabado">Grabado</button>
-        <button class="cat-btn" data-cat="escultura">Escultura</button>
+        <button class="cat-btn active" data-cat="all" data-i18n="cat_all">Todo</button>
+        <button class="cat-btn" data-cat="pintura" data-i18n="cat_pintura">Pinturas</button>
+        <button class="cat-btn" data-cat="dibujo" data-i18n="cat_dibujo">Dibujo</button>
+        <button class="cat-btn" data-cat="grabado" data-i18n="cat_grabado">Grabado</button>
+        <button class="cat-btn" data-cat="escultura" data-i18n="cat_escultura">Escultura</button>
       </nav>
 
       <!-- Right: availability filter + view toggle (desktop) -->
       <div class="obra-controls-right">
         <div class="avail-filter" id="avail-filter">
-          <button class="avail-btn active" data-avail="all">Todos</button>
+          <button class="avail-btn active" data-avail="all" data-i18n="avail_all">Todos</button>
           <button class="avail-btn" data-avail="green">
-            <span class="avail-btn-dot dot-green"></span>Disponible
+            <span class="avail-btn-dot dot-green"></span><span data-i18n="avail_green">Disponible</span>
           </button>
           <button class="avail-btn" data-avail="yellow">
-            <span class="avail-btn-dot dot-yellow"></span>Para exhibir
+            <span class="avail-btn-dot dot-yellow"></span><span data-i18n="avail_yellow">Para exhibir</span>
           </button>
           <button class="avail-btn" data-avail="red">
-            <span class="avail-btn-dot dot-red"></span>No disponible
+            <span class="avail-btn-dot dot-red"></span><span data-i18n="avail_red">No disponible</span>
           </button>
         </div>
         <div class="view-toggle" id="view-toggle">
@@ -196,15 +200,15 @@
     <!-- Mobile secondary menu -->
     <div class="controls-secondary" id="controls-secondary">
       <div class="avail-filter" id="avail-filter-mobile">
-        <button class="avail-btn active" data-avail="all">Todos</button>
+        <button class="avail-btn active" data-avail="all" data-i18n="avail_all">Todos</button>
         <button class="avail-btn" data-avail="green">
-          <span class="avail-btn-dot dot-green"></span>Disponible
+          <span class="avail-btn-dot dot-green"></span><span data-i18n="avail_green">Disponible</span>
         </button>
         <button class="avail-btn" data-avail="yellow">
-          <span class="avail-btn-dot dot-yellow"></span>Para exhibir
+          <span class="avail-btn-dot dot-yellow"></span><span data-i18n="avail_yellow">Para exhibir</span>
         </button>
         <button class="avail-btn" data-avail="red">
-          <span class="avail-btn-dot dot-red"></span>No disponible
+          <span class="avail-btn-dot dot-red"></span><span data-i18n="avail_red">No disponible</span>
         </button>
       </div>
       <div class="view-toggle" id="view-toggle-mobile">
@@ -263,7 +267,7 @@
 
     <!-- Empty state -->
     <div class="obra-empty" id="obra-empty" style="display:none">
-      <p>No hay obras en esta selección.</p>
+      <p data-i18n="empty">No hay obras en esta selección.</p>
     </div>
 
   </section><!-- /obra-section -->
@@ -271,40 +275,40 @@
   <!-- ── ARTISTA ────────────────────────────────────────── -->
   <section class="artista-section" id="artista">
     <div class="artista-left">
-      <p class="artista-role">Artista visual, escritor y escultor</p>
+      <p class="artista-role" data-i18n="artista_role">Artista visual, escritor y escultor</p>
       <h2 class="artista-name">Miguel<br>Costemalle<br>Carrandi</h2>
-      <p class="artista-bio">Miguel Costemalle Carrandi es un artista visual y escritor mexicano cuya práctica se desarrolla entre México y Europa. Desde temprana edad exploró distintas disciplinas tales como la literatura, fotografía, música y pintura, movido más por la necesidad de expresar emociones que por una intención profesional. Con el tiempo, encontró su voz al unir la palabra y la imagen, haciendo de la literatura y el arte un solo lenguaje.</p>
+      <p class="artista-bio" data-i18n="artista_bio1">Miguel Costemalle Carrandi es un artista visual y escritor mexicano cuya práctica se desarrolla entre México y Europa. Desde temprana edad exploró distintas disciplinas tales como la literatura, fotografía, música y pintura, movido más por la necesidad de expresar emociones que por una intención profesional. Con el tiempo, encontró su voz al unir la palabra y la imagen, haciendo de la literatura y el arte un solo lenguaje.</p>
       <br>
-      <p class="artista-bio">Su trabajo nace de una mirada romántica y poética que dialoga con lo contemporáneo sin perder carga emocional. Convencido de que el valor sentimental se ha diluido en muchas prácticas actuales, integra texto en sus pinturas como un gesto de resistencia: un recordatorio de cómo se siente.</p>
+      <p class="artista-bio" data-i18n="artista_bio2">Su trabajo nace de una mirada romántica y poética que dialoga con lo contemporáneo sin perder carga emocional. Convencido de que el valor sentimental se ha diluido en muchas prácticas actuales, integra texto en sus pinturas como un gesto de resistencia: un recordatorio de cómo se siente.</p>
       <br>
-      <p class="artista-bio">En su desarrollo reciente, su práctica ha evolucionado hacia una exploración más amplia de la materialidad y el espacio, incorporando escultura e instalación. Ha trabajado con materiales como acero, bronce y superficies intervenidas, llevando su lenguaje a formatos de mayor escala y dimensión física.</p>
+      <p class="artista-bio" data-i18n="artista_bio3">En su desarrollo reciente, su práctica ha evolucionado hacia una exploración más amplia de la materialidad y el espacio, incorporando escultura e instalación. Ha trabajado con materiales como acero, bronce y superficies intervenidas, llevando su lenguaje a formatos de mayor escala y dimensión física.</p>
       <br>
-      <p class="artista-bio">Paralelamente, ha consolidado una presencia activa en contextos expositivos y colaborativos, construyendo un cuerpo de obra que mantiene coherencia entre lo íntimo y lo estructural. Actualmente, su trabajo se orienta hacia la expansión de su lenguaje visual y literario, con interés en proyectos de mayor alcance internacional, sin desprenderse de su eje central: la emoción como materia.</p>
+      <p class="artista-bio" data-i18n="artista_bio4">Paralelamente, ha consolidado una presencia activa en contextos expositivos y colaborativos, construyendo un cuerpo de obra que mantiene coherencia entre lo íntimo y lo estructural. Actualmente, su trabajo se orienta hacia la expansión de su lenguaje visual y literario, con interés en proyectos de mayor alcance internacional, sin desprenderse de su eje central: la emoción como materia.</p>
     </div>
     <div class="artista-right">
       <div class="artista-block">
-        <p class="artista-block-title">Formación</p>
-        <p>B.A. in Visual Arts and Painting<br>NABA — Nuova Accademia di Belle Arti, Milán</p>
+        <p class="artista-block-title" data-i18n="formacion">Formación</p>
+        <p data-i18n-html="formacion_content">B.A. in Visual Arts and Painting<br>NABA — Nuova Accademia di Belle Arti, Milán</p>
       </div>
       <div class="artista-block">
-        <p class="artista-block-title">Especialidad</p>
-        <p>Pintura, instalación y escultura en acero oxidado, cemento, lino y madera.</p>
+        <p class="artista-block-title" data-i18n="especialidad">Especialidad</p>
+        <p data-i18n="especialidad_content">Pintura, instalación y escultura en acero oxidado, cemento, lino y madera.</p>
       </div>
       <div class="artista-block">
-        <p class="artista-block-title">Líneas de investigación</p>
-        <p>Color, materia, memoria y deseo.</p>
+        <p class="artista-block-title" data-i18n="lineas">Líneas de investigación</p>
+        <p data-i18n="lineas_content">Color, materia, memoria y deseo.</p>
       </div>
       <div class="artista-block">
-        <p class="artista-block-title">Exposiciones recientes</p>
-        <ul>
+        <p class="artista-block-title" data-i18n="exposiciones">Exposiciones recientes</p>
+        <ul data-i18n-html="exp_list">
           <li>El Arte del Gran Premio, Ciudad de México (2025)</li>
           <li>Exposición individual, Ciudad de México (2024)</li>
           <li>Exposición individual, Milán (2024)</li>
         </ul>
       </div>
       <div class="artista-block">
-        <p class="artista-block-title">Idiomas</p>
-        <p>Español, inglés, italiano, francés.</p>
+        <p class="artista-block-title" data-i18n="idiomas">Idiomas</p>
+        <p data-i18n="idiomas_content">Español, inglés, italiano, francés.</p>
       </div>
     </div>
   </section>
@@ -312,20 +316,26 @@
   <!-- ── FOOTER ─────────────────────────────────────────── -->
   <footer class="footer" id="contacto">
     <div class="footer-col">
-      <p class="footer-col-title">Contacto</p>
+      <p class="footer-col-title" data-i18n="footer_contacto">Contacto</p>
       <a href="mailto:mikecostemalle@gmail.com">mikecostemalle@gmail.com</a>
       <a href="tel:+525527554122">+52 55 2755 4122</a>
       <a href="tel:+393513689894">+39 351 3689894</a>
     </div>
     <div class="footer-col">
-      <p class="footer-col-title">Ubicación</p>
-      <p>Ciudad de México / Milán</p>
+      <p class="footer-col-title" data-i18n="footer_ubicacion">Ubicación</p>
+      <p data-i18n="footer_ciudad">Ciudad de México / Milán</p>
     </div>
     <div class="footer-col">
-      <p class="footer-col-title">Redes</p>
+      <p class="footer-col-title" data-i18n="footer_redes">Redes</p>
       <a href="https://instagram.com/costemallecarrandi" target="_blank" rel="noopener">@costemallecarrandi</a>
     </div>
   </footer>
+
+  <!-- Lightbox -->
+  <div class="lb-overlay" id="lb-overlay">
+    <button class="lb-close" id="lb-close" aria-label="Cerrar">×</button>
+    <img class="lb-img" id="lb-img" alt="" />
+  </div>
 
   <script defer src="script.js"></script>
   <script>
