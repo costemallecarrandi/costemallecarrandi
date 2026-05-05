@@ -6,7 +6,7 @@
    - Imágenes: stale-while-revalidate (rápido + actualiza en fondo)
    ============================================================ */
 
-const CACHE = 'portfolio-v2';
+const CACHE = 'portfolio-v3';
 const STATIC = [
   './',
   './index.html',
