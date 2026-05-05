@@ -117,25 +117,37 @@
 <body>
 
   <header class="header" id="main-header">
-    <a href="#" class="header-name">Miguel Costemalle Carrandi</a>
     <nav class="header-nav">
       <a href="#obra" data-i18n="nav_obra">obra</a>
       <a href="#artista" data-i18n="nav_artista">artista</a>
       <a href="#contacto" data-i18n="nav_contacto">contacto</a>
     </nav>
-    <div class="lang-toggle" id="lang-toggle">
-      <button class="lang-btn" data-lang="es">ES</button>
-      <button class="lang-btn" data-lang="en">EN</button>
+    <a href="#" class="header-name">Miguel Costemalle Carrandi</a>
+    <div class="header-right">
+      <div class="lang-toggle" id="lang-toggle">
+        <button class="lang-btn" data-lang="es">ES</button>
+        <button class="lang-btn" data-lang="en">EN</button>
+      </div>
+      <button class="hamburger" id="hamburger" aria-label="Menú">
+        <span></span><span></span><span></span>
+      </button>
     </div>
-    <button class="hamburger" id="hamburger" aria-label="Menú">
-      <span></span><span></span><span></span>
-    </button>
   </header>
   <div class="mobile-nav" id="mobile-nav">
     <a href="#obra" class="mobile-nav-link" data-i18n="mob_obra">Obra</a>
     <a href="#artista" class="mobile-nav-link" data-i18n="mob_artista">Artista</a>
     <a href="#contacto" class="mobile-nav-link" data-i18n="mob_contacto">Contacto</a>
   </div>
+
+  <!-- ── HERO ─────────────────────────────────────────────── -->
+  <section class="hero" id="hero">
+    <div class="hero-bg" id="hero-bg"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <p class="hero-role">Artista visual</p>
+      <h1 class="hero-name">Miguel<br>Costemalle<br>Carrandi</h1>
+    </div>
+  </section>
 
   <!-- ── OBRA ─────────────────────────────────────────────── -->
   <section class="obra-section" id="obra">
@@ -230,6 +242,7 @@
 
     <!-- ── SLIDESHOW VIEW ─────────────────────────────────── -->
     <div class="slide-view" id="slide-view">
+      <button class="slide-close" id="slide-close" aria-label="Volver al grid">×</button>
 
       <!-- Image area -->
       <div class="slide-area">

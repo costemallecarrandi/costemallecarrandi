@@ -455,6 +455,7 @@ function renderSlide() {
     const img = document.createElement('img');
     img.alt = obra.title;
     img.style.opacity = '0';
+    img.style.cursor = 'zoom-in';
     slideImgWrap.appendChild(img);
     img.onload = () => { img.style.opacity = '1'; };
     img.src = encodeURI(imgs[gSub]);
@@ -718,6 +719,34 @@ slideView.addEventListener('touchend', e => {
   if (dx > window.innerWidth * 0.55) { setView('grid'); return; }
   if (Math.abs(dx) > 48) goObra(dx < 0 ? 1 : -1);
 }, { passive: true });
+
+document.getElementById('slide-close').addEventListener('click', () => setView('grid'));
+
+(function initHero() {
+  const bg = document.getElementById('hero-bg');
+  if (!bg) return;
+  const featured = [
+    'LOU.jpg', '7 EN GUERRA.jpg', 'UMBRAL.jpg',
+    'CALACAZUL 2 OLVERA.jpg', 'MURAL EKTA CALACA 25.jpg',
+    'INSTALACIÓN MURCIÉLAGOS 5.jpg'
+  ];
+  const pick = featured[Math.floor(Math.random() * featured.length)];
+  const img = new Image();
+  img.onload = () => {
+    bg.style.backgroundImage = `url('${encodeURI(pick)}')`;
+    bg.classList.add('loaded');
+  };
+  img.src = encodeURI(pick);
+})();
+
+(function initHeaderScroll() {
+  const header = document.getElementById('main-header');
+  const hero   = document.getElementById('hero');
+  if (!hero) { header.classList.add('visible'); return; }
+  const check = () => header.classList.toggle('visible', window.scrollY > hero.offsetHeight * 0.7);
+  window.addEventListener('scroll', check, { passive: true });
+  requestAnimationFrame(check);
+})();
 
 applyLang();
 fetch('obras.json?v=' + Date.now())
