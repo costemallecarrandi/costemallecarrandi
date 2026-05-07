@@ -710,13 +710,16 @@ slideImgWrap.addEventListener('click', () => {
 lbOverlay.addEventListener('click', closeLightbox);
 lbClose.addEventListener('click', e => { e.stopPropagation(); closeLightbox(); });
 
-document.getElementById('lang-toggle').addEventListener('click', e => {
+function handleLangClick(e) {
   const btn = e.target.closest('.lang-btn');
   if (!btn) return;
   gLang = btn.dataset.lang;
   localStorage.setItem('lang', gLang);
   applyLang();
-});
+}
+document.getElementById('lang-toggle').addEventListener('click', handleLangClick);
+const mobileNavLang = document.getElementById('mobile-nav-lang');
+if (mobileNavLang) mobileNavLang.addEventListener('click', handleLangClick);
 
 let _tx = 0, _ty = 0;
 slideView.addEventListener('touchstart', e => {
