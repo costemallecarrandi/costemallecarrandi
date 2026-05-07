@@ -610,7 +610,11 @@ function setView(v) {
     b.classList.toggle('active', b.dataset.view === v)
   );
   if (controlsSecondary) { controlsSecondary.classList.remove('open'); mobileFilterBtn.classList.remove('active'); }
-  if (v === 'slide') { window.scrollTo({ top: 0, behavior: 'instant' }); renderSlide(); }
+  if (v === 'slide') {
+    const obraEl = document.getElementById('obra');
+    window.scrollTo({ top: obraEl ? obraEl.offsetTop : 0, behavior: 'instant' });
+    renderSlide();
+  }
   else renderGrid();
 }
 
