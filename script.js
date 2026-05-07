@@ -585,15 +585,22 @@ function applyLang() {
   if (gView === 'slide') renderSlide();
 }
 
+let _lbScrollY = 0;
 function openLightbox(src) {
   lbImg.src = src;
   lbOverlay.classList.add('open');
-  document.body.style.overflow = 'hidden';
+  _lbScrollY = window.scrollY;
+  document.body.style.position = 'fixed';
+  document.body.style.top = `-${_lbScrollY}px`;
+  document.body.style.width = '100%';
 }
 
 function closeLightbox() {
   lbOverlay.classList.remove('open');
-  document.body.style.overflow = '';
+  document.body.style.position = '';
+  document.body.style.top = '';
+  document.body.style.width = '';
+  window.scrollTo(0, _lbScrollY);
   setTimeout(() => { lbImg.src = ''; }, 300);
 }
 
