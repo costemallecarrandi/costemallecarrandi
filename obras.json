@@ -1,5 +1,17 @@
 [
   {
+    "id": "me-das-mi-domingo-4",
+    "tipo": "pintura",
+    "title": "\"¿ME DAS MI DOMINGO? 4\"",
+    "dim": "197×192 cm",
+    "tecnica": "Óleo sobre lino",
+    "year": "2026",
+    "price": null,
+    "avail": "green",
+    "serie": "Liquenes",
+    "img": "Screenshot 2026-05-08 at 2.14.35 PM.png"
+  },
+  {
     "id": "pared-maria-1",
     "tipo": "pintura",
     "title": "\"PARED MARIA 1\"",
